@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة زفاف: علي & لبنى</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Cairo:wght@300;400;600;700;800&family=Reem+Kufi:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#FFF9E6',
+                            200: '#FFE8A3',
+                            300: '#F5D061',
+                            400: '#E6B83B',
+                            500: '#D4AF37', // Classic metallic gold
+                            600: '#AA820A',
+                            700: '#806000',
+                            800: '#554000',
+                        },
+                        darkbg: '#080808',
+                        cardbg: 'rgba(18, 18, 18, 0.85)',
+                    },
+                    fontFamily: {
+                        ruqaa: ['"Aref Ruqaa"', 'serif'],
+                        amiri: ['"Amiri"', 'serif'],
+                        kufi: ['"Reem Kufi"', 'sans-serif'],
+                        cairo: ['"Cairo"', 'sans-serif'],
+                        tajawal: ['"Tajawal"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styling & Metallic Gold Gradients */
+        body {
+            background-color: #080808;
+            color: #f3f4f6;
+            font-family: 'Tajawal', sans-serif;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+        }
+
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 35%, #B38728 70%, #AA771C 100%);
+        }
+
+        .glass-card {
+            background: rgba(18, 18, 22, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85), 0 0 25px rgba(212, 175, 55, 0.12);
+        }
+
+        /* Canvas particles */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Interactive Envelope styling */
+        .envelope-wrapper {
+            perspective: 1000px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 310px;
+            height: 210px;
+            background: #121212;
+            border: 2px solid #D4AF37;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 30px rgba(212,175,55,0.3);
+            cursor: pointer;
+            transition: transform 0.6s ease;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            border-left: 155px solid transparent;
+            border-right: 155px solid transparent;
+            border-top: 115px solid #1c1c1c;
+            transform-origin: top;
+            transition: transform 0.8s ease 0.2s, z-index 0.2s;
+            z-index: 4;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+        }
+
+        .envelope-flap::after {
+            content: '';
+            position: absolute;
+            top: -115px;
+            left: -155px;
+            width: 310px;
+            height: 115px;
+            background: linear-gradient(180deg, rgba(212,175,55,0.4) 0%, transparent 100%);
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+        }
+
+        .envelope-seal {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 58px;
+            height: 58px;
+            background: radial-gradient(circle, #FCF6BA 0%, #B38728 70%, #AA771C 100%);
+            border-radius: 50%;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.7), 0 0 25px rgba(212,175,55,0.8);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope.open .envelope-seal {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.4);
+        }
+
+        /* Calligraphy flourish decorations */
+        .ornament-corner-tl { top: 12px; left: 12px; border-top: 2px solid #D4AF37; border-left: 2px solid #D4AF37; }
+        .ornament-corner-tr { top: 12px; right: 12px; border-top: 2px solid #D4AF37; border-right: 2px solid #D4AF37; }
+        .ornament-corner-bl { bottom: 12px; left: 12px; border-bottom: 2px solid #D4AF37; border-left: 2px solid #D4AF37; }
+        .ornament-corner-br { bottom: 12px; right: 12px; border-bottom: 2px solid #D4AF37; border-right: 2px solid #D4AF37; }
+
+        /* Smooth reveal animation classes */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Pulse glow */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.7); }
+        }
+        .pulse-glow {
+            animation: pulseGlow 2.5s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative flex flex-col justify-between items-center selection:bg-gold-500 selection:text-black">
+
+    <!-- Particle canvas background -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Background Music Control Toggle Button -->
+    <div class="fixed top-5 left-5 z-50">
+        <button id="audio-toggle-btn" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-gold-400 hover:text-gold-200 transition-all duration-300 shadow-lg hover:scale-110 active:scale-95" title="تشغيل / إيقاف الموسيقى">
+            <i id="audio-icon" class="fas fa-music text-lg"></i>
+        </button>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="w-full max-w-xl mx-auto px-4 py-8 z-10 flex flex-col items-center">
+
+        <!-- STEP 1: INTERACTIVE ENVELOPE OPENING SCREEN -->
+        <div id="envelope-screen" class="w-full flex flex-col items-center justify-center min-h-[85vh] transition-opacity duration-700">
+            <div class="text-center mb-8">
+                <div class="inline-block p-2 rounded-full border border-gold-500/40 mb-3 bg-gold-500/5">
+                    <span class="font-ruqaa text-gold-300 text-lg px-4">دعوة زفاف خاصة</span>
+                </div>
+                <h1 class="font-ruqaa text-4xl sm:text-5xl gold-gradient-text font-bold mb-2">علي & لبنى</h1>
+                <p class="text-gray-400 text-sm font-tajawal">يسرنا دعوتكم لمشاركتنا فرحتنا</p>
+            </div>
+
+            <!-- Envelope Container -->
+            <div class="envelope-wrapper my-6" id="envelope-click-area">
+                <div class="envelope" id="envelope-box">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-seal">
+                        <i class="fas fa-heart text-amber-950 text-xl"></i>
+                    </div>
+                    <!-- Inside Envelope Content snippet -->
+                    <div class="absolute inset-x-4 top-8 bottom-4 bg-zinc-900/90 rounded border border-gold-500/30 p-4 flex flex-col items-center justify-center text-center">
+                        <i class="fas fa-crown text-gold-400 text-2xl mb-2"></i>
+                        <p class="font-ruqaa text-gold-300 text-xl">دعوة زفاف</p>
+                    </div>
+                </div>
+            </div>
+
+            <button id="open-invitation-btn" class="mt-8 px-8 py-3 rounded-full gold-gradient-bg text-black font-bold font-cairo shadow-lg hover:brightness-110 transition-all duration-300 flex items-center gap-3 pulse-glow active:scale-95">
+                <i class="fas fa-envelope-open"></i>
+                <span>اضغط لفتح الدعوة</span>
+            </button>
+        </div>
+
+
+        <!-- STEP 2: FULL WEDDING CARD DETAILS (Hidden until opened) -->
+        <div id="invitation-content" class="w-full hidden space-y-8 my-4 transition-all duration-1000 opacity-0">
+
+            <!-- MAIN INVITATION HEADER CARD -->
+            <div class="glass-card rounded-2xl p-6 sm:p-10 relative text-center overflow-hidden fade-in-up">
+                <!-- Decorative Corner Ornaments -->
+                <div class="absolute ornament-corner-tl w-8 h-8"></div>
+                <div class="absolute ornament-corner-tr w-8 h-8"></div>
+                <div class="absolute ornament-corner-bl w-8 h-8"></div>
+                <div class="absolute ornament-corner-br w-8 h-8"></div>
+
+                <!-- Bismillah Header -->
+                <div class="mb-6">
+                    <p class="font-amiri text-gold-300 text-xl sm:text-2xl leading-relaxed">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+                    <div class="w-24 h-0.5 mx-auto my-3 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+                    <p class="font-amiri text-gray-300 text-sm sm:text-base italic leading-relaxed px-2">
+                        "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً"
+                    </p>
+                </div>
+
+                <!-- Hosts Announcement -->
+                <div class="my-8 text-gray-200 leading-relaxed font-tajawal text-base sm:text-lg">
+                    <p class="text-gold-400 text-sm font-semibold mb-2">يتشرف كل من</p>
+                    <div class="space-y-1 font-cairo font-bold text-gray-100">
+                        <p class="text-lg sm:text-xl">الدكتور <span class="gold-gradient-text">عماد علي عبيدات</span></p>
+                        <p class="text-gray-400 text-xs font-normal">وَ</p>
+                        <p class="text-lg sm:text-xl">السيد <span class="gold-gradient-text">هيثم احمد حمد طرادات</span></p>
+                    </div>
+                    <p class="mt-4 text-sm sm:text-base text-gray-300">
+                        بدعوتكم لحضور حفل زفاف ولديهما الغاليين
+                    </p>
+                </div>
+
+                <!-- Groom & Bride Names Block -->
+                <div class="my-10 py-6 border-y border-gold-500/30 bg-gradient-to-r from-transparent via-gold-500/10 to-transparent relative">
+                    <i class="fas fa-ring text-gold-400 text-xl absolute -top-3 left-1/2 -translate-x-1/2 bg-zinc-950 px-3"></i>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 my-2">
+                        <span class="font-ruqaa text-4xl sm:text-5xl font-bold gold-gradient-text tracking-wide">علي</span>
+                        <span class="font-ruqaa text-2xl text-gold-300 font-light">&</span>
+                        <span class="font-ruqaa text-4xl sm:text-5xl font-bold gold-gradient-text tracking-wide">لبنى</span>
+                    </div>
+
+                    <p class="font-ruqaa text-gold-300/80 text-lg mt-2">بارك الله لهما وبارك عليهما وجمع بينهما في خير</p>
+                </div>
+
+                <!-- Main Date Highlight -->
+                <div class="flex justify-center items-center gap-3 sm:gap-4 my-6 text-center font-cairo">
+                    <div class="border-y border-gold-500/40 px-3 py-2">
+                        <span class="block text-xs text-gold-400 uppercase tracking-widest">اليوم</span>
+                        <span class="text-base sm:text-lg font-bold text-white">السبت</span>
+                    </div>
+                    <div class="bg-gold-500/10 border border-gold-500/50 rounded-xl px-4 py-3">
+                        <span class="block text-2xl sm:text-3xl font-black text-gold-300">07</span>
+                        <span class="block text-xs text-gray-300">تشرين الثاني (11) 2026</span>
+                    </div>
+                    <div class="border-y border-gold-500/40 px-3 py-2">
+                        <span class="block text-xs text-gold-400 uppercase tracking-widest">الوقت</span>
+                        <span class="text-base sm:text-lg font-bold text-white">07:00 مساءً</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COUNTDOWN TIMER CARD (Starts from Left to Right: Days -> Hours -> Minutes -> Seconds) -->
+            <div class="glass-card rounded-2xl p-6 text-center relative fade-in-up">
+                <h3 class="font-cairo text-gold-400 font-semibold mb-4 text-sm tracking-wider flex items-center justify-center gap-2">
+                    <i class="fas fa-hourglass-half"></i>
+                    <span>المتبقي على يوم الفرح</span>
+                </h3>
+
+                <!-- Order from Left to Right: Days | Hours | Minutes | Seconds -->
+                <div class="grid grid-cols-4 gap-2 sm:gap-4 font-cairo" dir="ltr">
+                    <div class="bg-zinc-900/80 border border-gold-500/30 rounded-xl p-3">
+                        <span id="timer-days" class="block text-xl sm:text-3xl font-bold gold-gradient-text">00</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase font-tajawal">يوم</span>
+                    </div>
+                    <div class="bg-zinc-900/80 border border-gold-500/30 rounded-xl p-3">
+                        <span id="timer-hours" class="block text-xl sm:text-3xl font-bold gold-gradient-text">00</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase font-tajawal">ساعة</span>
+                    </div>
+                    <div class="bg-zinc-900/80 border border-gold-500/30 rounded-xl p-3">
+                        <span id="timer-minutes" class="block text-xl sm:text-3xl font-bold gold-gradient-text">00</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase font-tajawal">دقيقة</span>
+                    </div>
+                    <div class="bg-zinc-900/80 border border-gold-500/30 rounded-xl p-3">
+                        <span id="timer-seconds" class="block text-xl sm:text-3xl font-bold gold-gradient-text">00</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase font-tajawal">ثانية</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVENTS TIMELINE DETAILS CARD -->
+            <div class="glass-card rounded-2xl p-6 sm:p-8 space-y-6 fade-in-up">
+                <h2 class="font-ruqaa text-2xl text-gold-300 text-center border-b border-gold-500/20 pb-3 flex items-center justify-center gap-2">
+                    <i class="fas fa-calendar-star text-gold-400"></i>
+                    <span>مواعيد الحفلات والمناسبات</span>
+                </h2>
+
+                <!-- Event 1: Henna Night -->
+                <div class="bg-zinc-900/60 border-r-4 border-gold-500 rounded-xl p-4 transition-all hover:bg-zinc-900/90">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="bg-gold-500/20 text-gold-300 text-xs font-bold px-2.5 py-1 rounded-full inline-block mb-2">
+                                سهرة العريس (الحنّـــة)
+                            </span>
+                            <h4 class="font-cairo text-lg font-bold text-white mb-1">ليلة الحنّــة والسهرة</h4>
+                            <p class="text-sm text-gray-300 flex items-center gap-2 mb-1">
+                                <i class="far fa-calendar-alt text-gold-400 w-4"></i>
+                                <span>الجمعة 06/11/2026</span>
+                            </p>
+                            <p class="text-sm text-gray-300 flex items-center gap-2">
+                                <i class="far fa-clock text-gold-400 w-4"></i>
+                                <span>بعد صلاة العشاء مباشرة</span>
+                            </p>
+                        </div>
+                        <div class="text-gold-400 text-2xl pt-2">
+                            <i class="fas fa-drum"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event 2: Main Wedding Night -->
+                <div class="bg-zinc-900/60 border-r-4 border-gold-400 rounded-xl p-4 transition-all hover:bg-zinc-900/90">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="bg-gold-500/20 text-gold-300 text-xs font-bold px-2.5 py-1 rounded-full inline-block mb-2">
+                                حفل الزفاف الرئيسي
+                            </span>
+                            <h4 class="font-cairo text-lg font-bold text-white mb-1">حفل الزفاف المبارك</h4>
+                            <p class="text-sm text-gray-300 flex items-center gap-2 mb-1">
+                                <i class="far fa-calendar-check text-gold-400 w-4"></i>
+                                <span>السبت 07/11/2026</span>
+                            </p>
+                            <p class="text-sm text-gray-300 flex items-center gap-2 mb-1">
+                                <i class="fas fa-map-marker-alt text-gold-400 w-4"></i>
+                                <span class="font-semibold text-gold-200">صالة الشرق / القاعة الملوكية</span>
+                            </p>
+                            <p class="text-sm text-gray-300 flex items-center gap-2">
+                                <i class="far fa-clock text-gold-400 w-4"></i>
+                                <span>الساعة 07:00 مساءً</span>
+                            </p>
+                        </div>
+                        <div class="text-gold-400 text-2xl pt-2">
+                            <i class="fas fa-glass-cheers"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Action Button -->
+                <div class="flex justify-center pt-2">
+                    <a href="https://maps.google.com/?q=صالة+الشرق+القاعة+الملوكية" target="_blank" class="w-full sm:w-2/3 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-gold-500/40 bg-zinc-900 hover:bg-gold-500/20 text-gold-300 text-sm font-bold transition-all shadow-md">
+                        <i class="fas fa-location-dot text-gold-400"></i>
+                        <span>موقع القاعة على الخريطة</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- IMPORTANT NOTE BADGE: NO KIDS -->
+            <div class="glass-card rounded-2xl p-5 border-amber-500/40 text-center relative overflow-hidden fade-in-up">
+                <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 text-xl flex-shrink-0">
+                        <i class="fas fa-child-slash"></i>
+                    </div>
+                    <div class="text-center sm:text-right">
+                        <h4 class="font-cairo font-bold text-amber-300 text-sm sm:text-base">تنبيه وملاحظة هامة</h4>
+                        <p class="font-tajawal text-gray-200 text-sm mt-0.5">
+                            تكتمل فرحتنا وسعادتنا برؤيتكم، و<span class="font-bold text-amber-300 underline underline-offset-4">نعتذر عن استقبال الأطفال</span> لضمان راحتكم وراحة الجميع.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SHARE & FOOTER SECTION -->
+            <div class="glass-card rounded-2xl p-6 text-center space-y-4 fade-in-up">
+                <p class="font-ruqaa text-gold-300 text-lg">شاركونا الفرحة</p>
+                <div class="flex justify-center gap-3">
+                    <button id="share-whatsapp-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600/80 hover:bg-emerald-600 text-white font-cairo text-xs font-semibold transition-all shadow">
+                        <i class="fab fa-whatsapp text-lg"></i>
+                        <span>مشاركة عبر واتساب</span>
+                    </button>
+                    <button id="copy-link-btn" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-800 hover:bg-zinc-700 text-gold-300 border border-gold-500/30 font-cairo text-xs font-semibold transition-all shadow">
+                        <i class="fas fa-link text-sm"></i>
+                        <span>نسخ الرابط</span>
+                    </button>
+                </div>
+
+                <div class="pt-6 border-t border-gold-500/20 text-xs text-gray-500 font-tajawal">
+                    <p>أهلاً وسهلاً بكم في زفاف <span class="text-gold-400">علي & لبنى</span></p>
+                    <p class="mt-1 text-[10px] text-gray-600">2026 - جميع الحقوق محفوظة</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // --- 1. RELAXING AMBIENT PIANO SYNTHESIZER (WEB AUDIO API) ---
+        // Generates continuous, soft relaxing ambient piano chords & arpeggios reliably across all browsers.
+        let audioCtx = null;
+        let isPlayingAudio = false;
+        let ambientInterval = null;
+
+        const pianoNotes = [
+            261.63, // C4
+            329.63, // E4
+            392.00, // G4
+            493.88, // B4
+            523.25, // C5
+            659.25, // E5
+            783.99  // G5
+        ];
+
+        function playSoftPianoNote(freq, duration = 3.5) {
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine'; // Soft sine wave for clean relaxing tone
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+                // Very soft envelope
+                gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        function startAmbientPiano() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            isPlayingAudio = true;
+            document.getElementById('audio-icon').className = "fas fa-volume-up text-gold-300 animate-pulse";
+
+            // Arpeggio loop
+            let step = 0;
+            const sequence = [0, 2, 4, 3, 1, 5, 2, 6];
+            
+            if (ambientInterval) clearInterval(ambientInterval);
+
+            // Play initial chord
+            playSoftPianoNote(pianoNotes[0], 5);
+            playSoftPianoNote(pianoNotes[2], 5);
+
+            ambientInterval = setInterval(() => {
+                if (!isPlayingAudio) return;
+                const noteIndex = sequence[step % sequence.length];
+                playSoftPianoNote(pianoNotes[noteIndex], 4.5);
+                step++;
+            }, 1200);
+        }
+
+        function stopAmbientPiano() {
+            isPlayingAudio = false;
+            if (ambientInterval) clearInterval(ambientInterval);
+            document.getElementById('audio-icon').className = "fas fa-volume-mute text-gray-500";
+        }
+
+
+        // --- 2. GOLD PARTICLES CANVAS ANIMATION ---
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedY = Math.random() * 0.4 + 0.1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.7 + 0.2;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+
+                if (this.y < 0 || this.opacity <= 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                    this.opacity = Math.random() * 0.7 + 0.2;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const particlesArray = [];
+        const particleCount = Math.min(80, Math.floor(window.innerWidth / 15));
+
+        for (let i = 0; i < particleCount; i++) {
+            particlesArray.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.onload = function() {
+            animateParticles();
+            initCountdown();
+            initScrollObserver();
+        };
+
+        // --- 3. ENVELOPE & INVITATION REVEAL ---
+        const openBtn = document.getElementById('open-invitation-btn');
+        const envelopeBox = document.getElementById('envelope-box');
+        const envelopeScreen = document.getElementById('envelope-screen');
+        const invitationContent = document.getElementById('invitation-content');
+        const audioToggleBtn = document.getElementById('audio-toggle-btn');
+
+        function openInvitation() {
+            envelopeBox.classList.add('open');
+            startAmbientPiano();
+
+            setTimeout(() => {
+                envelopeScreen.classList.add('opacity-0');
+                setTimeout(() => {
+                    envelopeScreen.style.display = 'none';
+                    invitationContent.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        invitationContent.classList.remove('opacity-0');
+                        triggerScrollAnimations();
+                    }, 50);
+                }, 600);
+            }, 900);
+        }
+
+        openBtn.addEventListener('click', openInvitation);
+        document.getElementById('envelope-click-area').addEventListener('click', openInvitation);
+
+        // Music Control Toggle
+        audioToggleBtn.addEventListener('click', function() {
+            if (isPlayingAudio) {
+                stopAmbientPiano();
+            } else {
+                startAmbientPiano();
+            }
+        });
+
+
+        // --- 4. COUNTDOWN TIMER LOGIC ---
+        // Target Date: Nov 7, 2026, 19:00:00
+        const weddingDate = new Date("November 7, 2026 19:00:00").getTime();
+
+        function initCountdown() {
+            const daysEl = document.getElementById('timer-days');
+            const hoursEl = document.getElementById('timer-hours');
+            const minutesEl = document.getElementById('timer-minutes');
+            const secondsEl = document.getElementById('timer-seconds');
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+
+                if (distance < 0) {
+                    daysEl.innerText = "00";
+                    hoursEl.innerText = "00";
+                    minutesEl.innerText = "00";
+                    secondsEl.innerText = "00";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                daysEl.innerText = days < 10 ? '0' + days : days;
+                hoursEl.innerText = hours < 10 ? '0' + hours : hours;
+                minutesEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+                secondsEl.innerText = seconds < 10 ? '0' + seconds : seconds;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // --- 5. SHARING FUNCTIONALITY ---
+        document.getElementById('share-whatsapp-btn').addEventListener('click', function() {
+            const text = encodeURIComponent("يسرنا دعوتكم لحضور حفل زفاف (علي & لبنى) بتاريخ 07/11/2026 في صالة الشرق / القاعة الملوكية. تفاصيل الدعوة الكاملة عبر الرابط التالي:\n");
+            const url = window.location.href;
+            window.open(`https://api.whatsapp.com/send?text=${text}${encodeURIComponent(url)}`, '_blank');
+        });
+
+        document.getElementById('copy-link-btn').addEventListener('click', function() {
+            const dummy = document.createElement('input');
+            document.body.appendChild(dummy);
+            dummy.value = window.location.href;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            const btn = this;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fas fa-check text-emerald-400"></i><span>تم نسخ الرابط!</span>`;
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+            }, 2500);
+        });
+
+        // --- 6. SCROLL ANIMATION OBSERVER ---
+        function triggerScrollAnimations() {
+            const elements = document.querySelectorAll('.fade-in-up');
+            elements.forEach(el => {
+                el.classList.add('visible');
+            });
+        }
+
+        function initScrollObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+        }
+    </script>
+</body>
+</html>
